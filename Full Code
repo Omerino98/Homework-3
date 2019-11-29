@@ -1,0 +1,52 @@
+/*
+* OMAR MERINO | 23522877
+* READS IN LYRICS FROM A TEXT FILE AND DISPLAYS THE COUNT OF EACH WORD DISPLAYED
+ */
+package pkg3130.hw3;
+import java.util.*;
+import java.io.*;
+
+/**
+ *
+ * @author Omar Merino
+ */
+public class HW3 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm){
+        java.util.List<Map.Entry<String, Integer> > list = new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+        Collections.sort(list, new java.util.Comparator<Map.Entry<String, Integer> >(){
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2){
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for(Map.Entry<String, Integer> aa : list){
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
+    }
+    
+    public static void main(String[] args) throws FileNotFoundException{
+        // TODO code application logic here
+        Scanner console = new Scanner(System.in);
+        File infile = new File("Lyrics.txt");
+        Scanner input = new Scanner(infile);
+        HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
+        while(input.hasNext()){
+            String next = input.next().toLowerCase();
+            String clean = next;
+            if(!wordCounts.containsKey(clean))
+                    wordCounts.put(clean, 1);
+            else
+                wordCounts.put(clean, wordCounts.get(clean)+1);
+        }
+        HashMap<String, Integer> sortedMapAsc = HW3.sortByValue(wordCounts);
+        for(String word : sortedMapAsc.keySet()){
+            int count = sortedMapAsc.get(word);
+            System.out.println(count + ": " + word);
+        }
+    }
+}
